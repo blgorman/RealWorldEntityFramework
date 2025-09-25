@@ -4,7 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
+using Serilog.Events;
 using System;
 
 namespace EF10_NewFeatureDemos;
@@ -16,7 +18,7 @@ public class Program
         var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
         //TODO: Toggle this to turn interceptors on or off after running initial migrations (update database)
         var useInterceptors = Environment.GetEnvironmentVariable("USE_INTERCEPTORS") ?? "false";
-        var logToConsole = Environment.GetEnvironmentVariable("LOG_TO_CONSOLE") ?? "false";
+        var logToConsole = Environment.GetEnvironmentVariable("LOG_TO_CONSOLE") ?? "true"; //only works for queries when the interceptor is on
         var appSettingsFile = string.IsNullOrWhiteSpace(environment)
             ? "appsettings.json"
             : $"appsettings.{environment}.json";
@@ -31,6 +33,9 @@ public class Program
 
         var loggerConfig = new LoggerConfiguration()
             .MinimumLevel.Debug()
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", Serilog.Events.LogEventLevel.Warning)  // 👈 no SQL commands
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Query", Serilog.Events.LogEventLevel.Warning)            // 👈 no query compilation
+            .MinimumLevel.Override("EFCustomInterceptor", LogEventLevel.Information)
             .WriteTo.File(logPath, rollingInterval: RollingInterval.Day);
 
         if (logToConsole.Equals("true", StringComparison.OrdinalIgnoreCase))
@@ -52,39 +57,39 @@ public class Program
             .UseSerilog()
             .ConfigureAppConfiguration((context, config) =>
             {
-                config.SetBasePath(Directory.GetCurrentDirectory());
-                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                config.AddJsonFile(appSettingsFile, optional: true);
+                var env = context.HostingEnvironment;
+                config.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
                 config.AddEnvironmentVariables();
                 config.AddUserSecrets<Program>();
             })
             .ConfigureServices((context, services) =>
             {
                 var connectionString = context.Configuration.GetConnectionString("InventoryDbConnection");
-                services.AddScoped<LoggingCommandInterceptor>();
-                services.AddScoped<SoftDeleteInterceptor>();
+                // Register interceptors only when toggle is on
+                services.AddSingleton<LoggingCommandInterceptor>();
+                services.AddSingleton<SoftDeleteInterceptor>();
 
-                services.AddDbContext<InventoryDbContext>((serviceProvider, options) =>
+                if (useInterceptors.Equals("true", StringComparison.OrdinalIgnoreCase))
                 {
-                    var loggingInterceptor = serviceProvider.GetRequiredService<LoggingCommandInterceptor>();
-                    var softDeleteInterceptor = serviceProvider.GetRequiredService<SoftDeleteInterceptor>();
 
-                    //Turn on with the flag at the top or by setting the environment variable USE_INTERCEPTORS=true
-                    if (useInterceptors.Equals("true", StringComparison.OrdinalIgnoreCase))
+                    services.AddDbContext<InventoryDbContext>((serviceProvider, options) =>
                     {
                         options.UseSqlServer(connectionString)
-                            .AddInterceptors(loggingInterceptor, softDeleteInterceptor);
-                    }
-                    else
-                    {
-                        options.UseSqlServer(connectionString);
-                    }
-                });
+                               .AddInterceptors(
+                                   serviceProvider.GetRequiredService<LoggingCommandInterceptor>(),
+                                   serviceProvider.GetRequiredService<SoftDeleteInterceptor>());
+                    });
+                }
+                else
+                {
+                    services.AddDbContextFactory<InventoryDbContext>(options =>
+                        options.UseSqlServer(connectionString));
+
+                }
 
                 // Add other services here if needed
                 services.AddTransient<Application>();
-            })
-            .Build();
+            }).Build();
 
         using var scope = host.Services.CreateScope();
         var app = scope.ServiceProvider.GetRequiredService<Application>();

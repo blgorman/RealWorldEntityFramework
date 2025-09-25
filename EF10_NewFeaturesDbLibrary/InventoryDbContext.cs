@@ -3,6 +3,7 @@ using EF10_NewFeaturesModels;
 using EF10_NewFeaturesModels.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace EF10_NewFeaturesDbLibrary;    
 
@@ -21,7 +22,7 @@ public partial class InventoryDbContext : DbContext
     private LoggingCommandInterceptor _loggingInterceptor;
     private SoftDeleteInterceptor _softDeleteInterceptor;
 
-    public InventoryDbContext()
+    protected InventoryDbContext()
         : base()
     {
         Configure();
@@ -57,6 +58,8 @@ public partial class InventoryDbContext : DbContext
 
             optionsBuilder.UseSqlServer(connectionString);
         }
+
+        optionsBuilder.LogTo(_ => { }, LogLevel.Warning);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
