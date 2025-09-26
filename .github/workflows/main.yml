@@ -36,6 +36,7 @@ jobs:
             --project ../EF10_NewFeaturesDbLibrary/EF10_NewFeaturesDbLibrary.csproj \
             --startup-project . \
             --output ../../artifacts/migrate.exe \
+            --configuration Release \
             --verbose
             
 
