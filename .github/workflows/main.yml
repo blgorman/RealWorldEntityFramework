@@ -20,7 +20,7 @@ jobs:
         run: dotnet restore ./EF10_NewFeatureDemos/EF10_NewFeatureDemos.csproj
 
       - name: Build projects
-        run: dotnet build ./EF10_NewFeatureDemos/EF10_NewFeatureDemos.csproj --configuration Release
+        run: dotnet build ./EF10_NewFeatureDemos/EF10_NewFeatureDemos.csproj --no-restore 
         
       - name: Install EF Core Tools
         run: dotnet tool install --global dotnet-ef --version 10.0.0-rc.1.25451.107
@@ -36,7 +36,6 @@ jobs:
             --project ../EF10_NewFeaturesDbLibrary/EF10_NewFeaturesDbLibrary.csproj \
             --startup-project . \
             --output ../../artifacts/migrate.exe \
-            --configuration Release \
             --verbose
             
 
