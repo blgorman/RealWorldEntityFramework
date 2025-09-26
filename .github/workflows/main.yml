@@ -2,7 +2,7 @@ name: Build & Deploy with EF Migration Bundle
 
 on:
   push:
-    branches: [ mainnoway ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -33,11 +33,11 @@ jobs:
         run: |
           dotnet ef migrations bundle \
             --no-build \
-            --project EF10_NewFeaturesDbLibrary \
-            --startup-project EF10_NewFeatureDemos \
+            --project ../EF10_NewFeaturesDbLibrary/EF10_NewFeaturesDbLibrary.csproj \
+            --startup-project . \
             --output ./artifacts/migrate.exe \
             --runtime linux-x64 \
-            --self-contained false
+            --self-contained false \
             --verbose
             
 
