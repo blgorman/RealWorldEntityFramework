@@ -16,9 +16,6 @@ public partial class InventoryDbContext : DbContext
     public DbSet<Genre> Genres { get; set; }
     public DbSet<JunkToBulkDelete> JunkToBulkDeletes { get; set; }
 
-    public DbSet<Book> Books { get; set; }
-    public DbSet<Movie> Movies { get; set; }
-
     private LoggingCommandInterceptor _loggingInterceptor;
     private SoftDeleteInterceptor _softDeleteInterceptor;
 
@@ -98,21 +95,6 @@ public partial class InventoryDbContext : DbContext
         //and you would use a "CurrentUserService" or similar to get the current user's TenantId
         //**********************************************************************
         //entity configurations and seed data follow
-
-
-        /** ADDED FOR TPC INHERITANCE **/
-        modelBuilder.Entity<Book>(entity =>
-        {
-            entity.Property(b => b.Id).UseIdentityColumn();
-            entity.HasData(SeedData.Books);
-        });
-
-        modelBuilder.Entity<Movie>(entity =>
-        {
-            entity.Property(m => m.Id).UseIdentityColumn();
-            entity.HasData(SeedData.Movies);
-        });
-        /** END ADDED FOR TPC INHERITANCE **/
 
         modelBuilder.Entity<Item>(entity => {
             entity.Property(i => i.ItemName).IsRequired().HasMaxLength(100);

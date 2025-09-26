@@ -16,7 +16,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.0-preview.7.25380.108")
+                .HasAnnotation("ProductVersion", "10.0.0-rc.1.25451.107")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -51,7 +51,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("CategoryName")
                         .IsUnique();
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -114,7 +114,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("ContributorName")
                         .IsUnique();
 
-                    b.ToTable("Contributors");
+                    b.ToTable("Contributors", (string)null);
                 });
 
             modelBuilder.Entity("EF10_NewFeaturesModels.Genre", b =>
@@ -143,7 +143,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("GenreName")
                         .IsUnique();
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
 
                     b.HasData(
                         new
@@ -243,7 +243,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(true, "DF_ItemIsActive");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -251,7 +251,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.Property<bool>("IsOnSale")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false, "DF_ItemIsOnSale");
 
                     b.Property<string>("ItemName")
                         .IsRequired()
@@ -270,9 +270,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("ItemName", "CategoryId", "TenantId")
                         .IsUnique();
 
-                    b.ToTable("Items");
-
-                    b.UseTpcMappingStrategy();
+                    b.ToTable("Items", (string)null);
 
                     b.HasData(
                         new
@@ -857,7 +855,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("ItemId", "ContributorId")
                         .IsUnique();
 
-                    b.ToTable("ItemContributors");
+                    b.ToTable("ItemContributors", (string)null);
 
                     b.HasData(
                         new
@@ -1490,7 +1488,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JunkToBulkDeletes");
+                    b.ToTable("JunkToBulkDeletes", (string)null);
                 });
 
             modelBuilder.Entity("EF10_NewFeaturesModels.Tenant", b =>
@@ -1519,7 +1517,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("TenantName")
                         .IsUnique();
 
-                    b.ToTable("Tenant");
+                    b.ToTable("Tenant", (string)null);
 
                     b.HasData(
                         new
@@ -1550,7 +1548,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("ItemGenres");
+                    b.ToTable("ItemGenres", (string)null);
 
                     b.HasData(
                         new
@@ -2045,170 +2043,6 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EF10_NewFeaturesModels.Book", b =>
-                {
-                    b.HasBaseType("EF10_NewFeaturesModels.Item");
-
-                    b.Property<string>("ISBN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlotSummary")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Books");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 51,
-                            CategoryId = 2,
-                            Description = "A test book 1",
-                            IsActive = true,
-                            IsDeleted = false,
-                            IsOnSale = false,
-                            ItemName = "book 1",
-                            TenantId = 1,
-                            ISBN = "978-0547928210",
-                            PlotSummary = "it thickens 1"
-                        },
-                        new
-                        {
-                            Id = 52,
-                            CategoryId = 2,
-                            Description = "A test book 2",
-                            IsActive = true,
-                            IsDeleted = false,
-                            IsOnSale = false,
-                            ItemName = "book 2",
-                            TenantId = 1,
-                            ISBN = "978-0441013593",
-                            PlotSummary = "it thickens 2"
-                        },
-                        new
-                        {
-                            Id = 53,
-                            CategoryId = 2,
-                            Description = "A test book 3",
-                            IsActive = true,
-                            IsDeleted = false,
-                            IsOnSale = false,
-                            ItemName = "book 3",
-                            TenantId = 1,
-                            ISBN = "978-0590353427",
-                            PlotSummary = "it thickens 3"
-                        },
-                        new
-                        {
-                            Id = 54,
-                            CategoryId = 2,
-                            Description = "A test book 4",
-                            IsActive = true,
-                            IsDeleted = false,
-                            IsOnSale = false,
-                            ItemName = "book 4",
-                            TenantId = 1,
-                            ISBN = "978-0307743657",
-                            PlotSummary = "it thickens 4"
-                        },
-                        new
-                        {
-                            Id = 55,
-                            CategoryId = 2,
-                            Description = "A test book 5",
-                            IsActive = true,
-                            IsDeleted = false,
-                            IsOnSale = false,
-                            ItemName = "book 5",
-                            TenantId = 1,
-                            ISBN = "978-0062693662",
-                            PlotSummary = "it thickens 5"
-                        });
-                });
-
-            modelBuilder.Entity("EF10_NewFeaturesModels.Movie", b =>
-                {
-                    b.HasBaseType("EF10_NewFeaturesModels.Item");
-
-                    b.Property<string>("MPAARating")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlotSummary")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Movies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 56,
-                            CategoryId = 1,
-                            Description = "A test movie 1",
-                            IsActive = true,
-                            IsDeleted = false,
-                            IsOnSale = false,
-                            ItemName = "movie 1",
-                            TenantId = 1,
-                            MPAARating = "R",
-                            PlotSummary = "Action Packed Missions 1"
-                        },
-                        new
-                        {
-                            Id = 57,
-                            CategoryId = 1,
-                            Description = "A test movie 2",
-                            IsActive = true,
-                            IsDeleted = false,
-                            IsOnSale = false,
-                            ItemName = "movie 2",
-                            TenantId = 1,
-                            MPAARating = "G",
-                            PlotSummary = "Action Packed Missions 2"
-                        },
-                        new
-                        {
-                            Id = 58,
-                            CategoryId = 1,
-                            Description = "A test movie 3",
-                            IsActive = true,
-                            IsDeleted = false,
-                            IsOnSale = false,
-                            ItemName = "movie 3",
-                            TenantId = 1,
-                            MPAARating = "PG",
-                            PlotSummary = "Action Packed Missions 3"
-                        },
-                        new
-                        {
-                            Id = 59,
-                            CategoryId = 1,
-                            Description = "A test movie 4",
-                            IsActive = true,
-                            IsDeleted = false,
-                            IsOnSale = false,
-                            ItemName = "movie 4",
-                            TenantId = 1,
-                            MPAARating = "PG-13",
-                            PlotSummary = "Action Packed Missions 4"
-                        },
-                        new
-                        {
-                            Id = 60,
-                            CategoryId = 1,
-                            Description = "A test movie 5",
-                            IsActive = true,
-                            IsDeleted = false,
-                            IsOnSale = false,
-                            ItemName = "movie 5",
-                            TenantId = 1,
-                            MPAARating = "PG",
-                            PlotSummary = "Action Packed Missions 5"
-                        });
-                });
-
             modelBuilder.Entity("EF10_NewFeaturesModels.Contributor", b =>
                 {
                     b.OwnsOne("EF10_NewFeaturesModels.Address", "Address", b1 =>
@@ -2236,7 +2070,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
 
                             b1.HasKey("ContributorId");
 
-                            b1.ToTable("Contributors");
+                            b1.ToTable("Contributors", (string)null);
 
                             b1.ToJson("Address");
 

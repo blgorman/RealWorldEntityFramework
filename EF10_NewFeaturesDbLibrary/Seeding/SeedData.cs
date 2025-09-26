@@ -408,21 +408,4 @@ public class SeedData
         new { ItemId = 50, GenreId = 1 } // SciFi
     };
 
-    public static Book[] Books = new[]
-    {
-        new Book { Id = 51, ISBN = "978-0547928210", CategoryId = 2, IsActive = true, IsDeleted = false, IsOnSale = false, ItemName = "book 1", PlotSummary = "it thickens 1", TenantId = 1, Description = "A test book 1"  },
-        new Book { Id = 52, ISBN = "978-0441013593", CategoryId = 2, IsActive = true, IsDeleted = false, IsOnSale = false, ItemName = "book 2", PlotSummary = "it thickens 2", TenantId = 1, Description = "A test book 2"},
-        new Book { Id = 53, ISBN = "978-0590353427", CategoryId = 2, IsActive = true, IsDeleted = false, IsOnSale = false, ItemName = "book 3", PlotSummary = "it thickens 3", TenantId = 1, Description = "A test book 3"},
-        new Book { Id = 54, ISBN = "978-0307743657", CategoryId = 2, IsActive = true, IsDeleted = false, IsOnSale = false, ItemName = "book 4", PlotSummary = "it thickens 4", TenantId = 1, Description = "A test book 4"},
-        new Book { Id = 55, ISBN = "978-0062693662", CategoryId = 2, IsActive = true, IsDeleted = false, IsOnSale = false, ItemName = "book 5", PlotSummary = "it thickens 5", TenantId = 1, Description = "A test book 5"},
-    };
-
-    public static Movie[] Movies = new[]
-    {
-        new Movie { Id = 56, CategoryId = 1, IsActive = true, IsDeleted = false, IsOnSale = false, ItemName = "movie 1", PlotSummary = "Action Packed Missions 1", TenantId = 1, Description = "A test movie 1", MPAARating = "R" },
-        new Movie { Id = 57, CategoryId = 1, IsActive = true, IsDeleted = false, IsOnSale = false, ItemName = "movie 2", PlotSummary = "Action Packed Missions 2", TenantId = 1, Description = "A test movie 2", MPAARating = "G" },
-        new Movie { Id = 58, CategoryId = 1, IsActive = true, IsDeleted = false, IsOnSale = false, ItemName = "movie 3", PlotSummary = "Action Packed Missions 3", TenantId = 1, Description = "A test movie 3", MPAARating = "PG" },
-        new Movie { Id = 59, CategoryId = 1, IsActive = true, IsDeleted = false, IsOnSale = false, ItemName = "movie 4", PlotSummary = "Action Packed Missions 4", TenantId = 1, Description = "A test movie 4", MPAARating = "PG-13" },
-        new Movie { Id = 60, CategoryId = 1, IsActive = true, IsDeleted = false, IsOnSale = false, ItemName = "movie 5", PlotSummary = "Action Packed Missions 5", TenantId = 1, Description = "A test movie 5", MPAARating = "PG" },
-    };
 }
