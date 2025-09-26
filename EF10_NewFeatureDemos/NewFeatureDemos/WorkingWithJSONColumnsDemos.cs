@@ -2,6 +2,8 @@
 using EF10_NewFeaturesDbLibrary;
 using EF10_NewFeaturesModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using System;
 
 namespace EF10_NewFeatureDemos.NewFeatureDemos;
 
@@ -77,7 +79,13 @@ public class WorkingWithJSONColumnsDemos : IAsyncDemo
     private async Task ShowOriginalJSONQueryLogic()
     {
         Console.WriteLine("Prior to JSON type");
-
+        var cityToFind = "Lakeside";
+        var contributors = await _db.Contributors
+            .FromSqlRaw(
+                "SELECT * FROM Contributors WHERE JSON_VALUE([Address], '$.City') = {0}", cityToFind
+            )
+            .ToListAsync();
+        Console.WriteLine(ConsolePrinter.PrintBoxedList(contributors, c => $"{c.ContributorName} - {c.Address?.AddressLine1}, {c.Address?.City}, {c.Address?.State} {c.Address?.PostalCode}"));
 
         Console.WriteLine("Prior to JSON type completed");
         UserInput.WaitForUserInput();
