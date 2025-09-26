@@ -42,9 +42,6 @@
 	  <ProjectReference Include="..\EF10_NewFeaturesDbLibrary\EF10_NewFeaturesDbLibrary.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Compile Remove="**/*.cs" />
-		<EmbeddedResource Remove="**/*.resx" />
-	</ItemGroup>
+
 
 </Project>
