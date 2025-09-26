@@ -16,7 +16,7 @@ public class Program
     public static async Task Main(string[] args)
     {
         var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
-        //TODO: Toggle this to turn interceptors on or off after running initial migrations (update database)
+        //TODO: Toggle this to turn interceptors on or off to see them in action
         var useInterceptors = Environment.GetEnvironmentVariable("USE_INTERCEPTORS") ?? "false";
         var logToConsole = Environment.GetEnvironmentVariable("LOG_TO_CONSOLE") ?? "true"; //only works for queries when the interceptor is on
         var appSettingsFile = string.IsNullOrWhiteSpace(environment)

@@ -1,6 +1,8 @@
 ﻿
 using EF10_NewFeatureDemos.ConsoleHelpers;
 using EF10_NewFeaturesDbLibrary;
+using EF10_NewFeaturesModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace EF10_NewFeatureDemos.NewFeatureDemos;
 
@@ -72,6 +74,19 @@ public class InterceptorsDemos : IAsyncDemo
     private async Task ShowLoggingInterceptor()
     {
         Console.WriteLine("Logging Interceptor");
+        Console.WriteLine("Run the program without the interceptors turned on and check the logs.");
+        Console.WriteLine("Then run the program with the interceptors turned on and check the logs again.");
+        Console.WriteLine("With the interceptor on, you should see the SQL commands and query compilation logs.");
+        Console.WriteLine("Note that by default this would have been logged, but I configured this to not log unless the interceptor is on.");
+
+        var items = _db.Items
+                        .Where(i => EF.Functions.Like(i.ItemName, "%lord%"))
+                        .OrderBy(i => i.ItemName)
+                        .Select(i => new { i.Id, i.ItemName });
+
+        Console.WriteLine("Executing query...");
+        Console.WriteLine("Query results:");
+        Console.WriteLine(ConsolePrinter.PrintBoxedList(items, j => $"{j.Id}: {j.ItemName}"));
 
         Console.WriteLine("Logging Interceptor Completed");
 
@@ -81,6 +96,36 @@ public class InterceptorsDemos : IAsyncDemo
     private async Task ShowSoftDeleteInterceptor()
     {
         Console.WriteLine("Soft Delete Interceptor");
+        Console.WriteLine("When the interceptors are on, all delete operations will be converted to modification (update) and set the IsDeleted flag to '1'");
+        Console.WriteLine("Run once without the interceptor for full delete");
+        Console.WriteLine("Run again with the interceptor to see soft delete in action");
+
+
+        var categories = await _db.Categories.ToListAsync();
+        Console.WriteLine(ConsolePrinter.PrintBoxedList(categories
+            , c => $"{c.Id}: {c.CategoryName} [IS Deleted: {c.IsDeleted}] - [Is Active {c.IsActive}]"));
+
+        var ts = DateTime.Now.ToString("yyyyMMddHHmmss");
+        var cat = new Category()
+        {
+            CategoryName = $"Test Category [{ts}]",
+            IsActive = true
+        };
+
+        //add it
+        _db.Categories.Add(cat);
+        await _db.SaveChangesAsync();
+
+        //now delete it (should be a soft delete)
+        //(put a breakpoint on SaveChangesAsync in the interceptor to see it hit)
+        _db.Categories.Remove(cat);
+        await _db.SaveChangesAsync();
+
+        //--------------------------------------------------
+
+        var currentCategories = await _db.Categories.ToListAsync();
+        Console.WriteLine(ConsolePrinter.PrintBoxedList(currentCategories
+            , c => $"{c.Id}: {c.CategoryName} [IS Deleted: {c.IsDeleted}] - [Is Active {c.IsActive}]"));
 
         Console.WriteLine("Soft Delete Interceptor Completed");
 
