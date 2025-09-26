@@ -32,9 +32,12 @@ jobs:
         working-directory: EF10_NewFeatureDemos
         run: |
           dotnet ef migrations bundle \
-            --project ../EF10_NewFeaturesDbLibrary/EF10_NewFeaturesDbLibrary.csproj \
-            --startup-project . \
-            --output ../../artifacts/migrate.exe \
+            --no-build \
+            --project EF10_NewFeaturesDbLibrary \
+            --startup-project EF10_NewFeatureDemos \
+            --output ./artifacts/migrate.exe \
+            --runtime linux-x64 \
+            --self-contained false
             --verbose
             
 
