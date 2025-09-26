@@ -33,18 +33,25 @@ public class BulkUpdateDeleteDemos : IAsyncDemo
         {
             case 1:
                 await BulkUpdateItemsAllOnSaleOriginal();
+                _db.ChangeTracker.Clear(); // Detach all tracked entities
                 break;
             case 2:
                 await BulkUpdateItemsNoneOnSaleNew();
+                _db.ChangeTracker.Clear(); // Detach all tracked entities
                 break;
             case 3:
                 await BulkUpdateMoviesAllOnSaleNew();
+                _db.ChangeTracker.Clear(); // Detach all tracked entities
                 break;
             case 4:
                 await BulkDeleteJunkDataByFilter();
+                _db.ChangeTracker.Clear(); // Detach all tracked entities
+
                 break;
             case 5:
                 await BulkDeleteJunkDataAll();
+                _db.ChangeTracker.Clear(); // Detach all tracked entities
+
                 break;
             case 6:
                 return false;
