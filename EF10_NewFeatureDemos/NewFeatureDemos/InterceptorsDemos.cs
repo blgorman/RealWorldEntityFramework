@@ -31,9 +31,11 @@ public class InterceptorsDemos : IAsyncDemo
         {
             case 1:
                 await ShowLoggingInterceptor();
+                _db.ChangeTracker.Clear(); // Detach all tracked entities
                 break;
             case 2:
                 await ShowSoftDeleteInterceptor();
+                _db.ChangeTracker.Clear(); // Detach all tracked entities
                 break;
             case 3:
                 return false;
@@ -101,9 +103,11 @@ public class InterceptorsDemos : IAsyncDemo
         Console.WriteLine("Run again with the interceptor to see soft delete in action");
 
 
+        Console.WriteLine(ConsolePrinter.PrintFormattedMessage("All Categories with filter status", "All Categories"));
         var categories = await _db.Categories.ToListAsync();
         Console.WriteLine(ConsolePrinter.PrintBoxedList(categories
             , c => $"{c.Id}: {c.CategoryName} [IS Deleted: {c.IsDeleted}] - [Is Active {c.IsActive}]"));
+        UserInput.WaitForUserInput();
 
         var ts = DateTime.Now.ToString("yyyyMMddHHmmss");
         var cat = new Category()
@@ -122,7 +126,7 @@ public class InterceptorsDemos : IAsyncDemo
         await _db.SaveChangesAsync();
 
         //--------------------------------------------------
-
+        Console.WriteLine(ConsolePrinter.PrintFormattedMessage("Current Categories with filters applied", "Categories no filters"));
         var currentCategories = await _db.Categories.ToListAsync();
         Console.WriteLine(ConsolePrinter.PrintBoxedList(currentCategories
             , c => $"{c.Id}: {c.CategoryName} [IS Deleted: {c.IsDeleted}] - [Is Active {c.IsActive}]"));

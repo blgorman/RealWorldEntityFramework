@@ -117,12 +117,12 @@ public class BulkUpdateDeleteDemos : IAsyncDemo
         Console.WriteLine("Bulk Update Items - Nothing is on sale");
 
         Console.WriteLine("New Bulk update allows for a single operation to update all items");
-        int countMovies = await _db.Items
+        int countItems = await _db.Items
                     .ExecuteUpdateAsync(s =>
                         s.SetProperty(i => i.IsOnSale, i => false)
                     );
 
-        Console.WriteLine($"Number of items updated: {countMovies}");
+        Console.WriteLine($"Number of items updated: {countItems}");
         var onSaleItems = await _db.Items.Where(i => i.IsOnSale).ToListAsync();
         Console.WriteLine($"Number of items on sale: {onSaleItems.Count}");
         var items = await _db.Items.ToListAsync();
