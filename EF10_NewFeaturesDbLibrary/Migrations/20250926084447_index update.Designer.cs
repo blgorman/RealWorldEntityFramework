@@ -3,6 +3,7 @@ using EF10_NewFeaturesDbLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF10_NewFeaturesDbLibrary.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250926084447_index update")]
+    partial class indexupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("CategoryName")
                         .IsUnique();
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -114,7 +117,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("ContributorName")
                         .IsUnique();
 
-                    b.ToTable("Contributors", (string)null);
+                    b.ToTable("Contributors");
                 });
 
             modelBuilder.Entity("EF10_NewFeaturesModels.Genre", b =>
@@ -143,7 +146,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("GenreName")
                         .IsUnique();
 
-                    b.ToTable("Genres", (string)null);
+                    b.ToTable("Genres");
 
                     b.HasData(
                         new
@@ -270,7 +273,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("ItemName", "CategoryId", "TenantId")
                         .IsUnique();
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
 
                     b.HasData(
                         new
@@ -855,7 +858,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("ItemId", "ContributorId")
                         .IsUnique();
 
-                    b.ToTable("ItemContributors", (string)null);
+                    b.ToTable("ItemContributors");
 
                     b.HasData(
                         new
@@ -1488,7 +1491,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JunkToBulkDeletes", (string)null);
+                    b.ToTable("JunkToBulkDeletes");
                 });
 
             modelBuilder.Entity("EF10_NewFeaturesModels.Tenant", b =>
@@ -1517,7 +1520,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
                     b.HasIndex("TenantName")
                         .IsUnique();
 
-                    b.ToTable("Tenant", (string)null);
+                    b.ToTable("Tenant");
 
                     b.HasData(
                         new
@@ -1548,7 +1551,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("ItemGenres", (string)null);
+                    b.ToTable("ItemGenres");
 
                     b.HasData(
                         new
@@ -2063,7 +2066,7 @@ namespace EF10_NewFeaturesDbLibrary.Migrations
 
                             b1.HasKey("ContributorId");
 
-                            b1.ToTable("Contributors", (string)null);
+                            b1.ToTable("Contributors");
 
                             b1.ToJson("Address");
 

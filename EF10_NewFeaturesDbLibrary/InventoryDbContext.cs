@@ -131,9 +131,6 @@ public partial class InventoryDbContext : DbContext
 
             entity.HasData(SeedData.Items);
 
-            //added for TPC inheritance:
-            entity.Property(i => i.Id).UseIdentityColumn();
-            entity.UseTpcMappingStrategy();
         });
 
         modelBuilder.Entity<Category>(entity => {
