@@ -35,9 +35,7 @@ jobs:
             --no-build \
             --project ../EF10_NewFeaturesDbLibrary/EF10_NewFeaturesDbLibrary.csproj \
             --startup-project . \
-            --output ./artifacts/migrate.exe \
-            --runtime linux-x64 \
-            --self-contained false \
+            --output ../../artifacts/migrate.exe \
             --verbose
             
 
