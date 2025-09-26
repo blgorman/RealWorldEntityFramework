@@ -19,10 +19,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Remove="**/*.resx" />
-	</ItemGroup> 
-	
-	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="$(MicrosoftEntityFrameworkCoreVersion)" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="$(MicrosoftEntityFrameworkCoreProxiesVersion)" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(MicrosoftEntityFrameworkCoreSqlServerVersion)" />
@@ -44,6 +40,11 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\EF10_NewFeaturesDbLibrary\EF10_NewFeaturesDbLibrary.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="**/*.cs" />
+		<EmbeddedResource Remove="**/*.resx" />
 	</ItemGroup>
 
 </Project>
